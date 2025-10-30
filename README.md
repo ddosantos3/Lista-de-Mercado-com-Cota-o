@@ -139,3 +139,4 @@ Observação: caso seja solicitado login/token, gere um Personal Access Token (P
 - Adicionar normalização e mapeamento de nomes de produtos (ex.: catálogos, sinônimos, marcas).
 - Persistência robusta (ex.: Postgres) e autenticação.
 - Observabilidade: logs estruturados, métricas e tracing.
+

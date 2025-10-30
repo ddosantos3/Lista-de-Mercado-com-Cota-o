@@ -1,22 +1,2 @@
-# Python
-.venv/
-__pycache__/
-*.pyc
-.pytest_cache/
 
-# Node / Expo
-node_modules/
-.expo/
-dist/
 
-# Playwright
-playwright-report/
-.playwright/
-
-# Local data (ephemeral or machine-specific)
-data/quotes/
-data/agents/snapshots/
-
-# OS
-.DS_Store
-Thumbs.db

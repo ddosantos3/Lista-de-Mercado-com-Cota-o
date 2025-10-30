@@ -1,0 +1,170 @@
+{
+  "requested_at": "2025-10-30T16:24:28-03:00",
+  "source": "real",
+  "currency": "BRL",
+  "cotacoes_detalhadas": {
+    "kawakami_marilia": [
+      {
+        "item_buscado": "arroz",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "feijão",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "óleo",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "café",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "açúcar",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "trigo",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "leite",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      }
+    ],
+    "tauste_marilia": [
+      {
+        "item_buscado": "arroz",
+        "item_encontrado": "arroz 5kg tipo 1",
+        "preco": 8.99
+      },
+      {
+        "item_buscado": "feijão",
+        "item_encontrado": "feijão carioca 1kg",
+        "preco": 8.99
+      },
+      {
+        "item_buscado": "óleo",
+        "item_encontrado": "óleo de soja 900ml",
+        "preco": 8.99
+      },
+      {
+        "item_buscado": "café",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "açúcar",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "trigo",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "leite",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      }
+    ],
+    "amigao": [
+      {
+        "item_buscado": "arroz",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "feijão",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "óleo",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "café",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "açúcar",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "trigo",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "leite",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      }
+    ],
+    "confianca_marilia": [
+      {
+        "item_buscado": "arroz",
+        "item_encontrado": "arroz 5kg tipo 1",
+        "preco": 50.0
+      },
+      {
+        "item_buscado": "feijão",
+        "item_encontrado": "feijão carioca 1kg",
+        "preco": 50.0
+      },
+      {
+        "item_buscado": "óleo",
+        "item_encontrado": "óleo de soja 900ml",
+        "preco": 50.0
+      },
+      {
+        "item_buscado": "café",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "açúcar",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "trigo",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      },
+      {
+        "item_buscado": "leite",
+        "item_encontrado": "Item não encontrado neste mercado",
+        "preco": 0.0
+      }
+    ]
+  },
+  "totais_por_mercado": {
+    "kawakami_marilia": 0.0,
+    "tauste_marilia": 26.97,
+    "amigao": 0.0,
+    "confianca_marilia": 150.0
+  },
+  "requested_items": [
+    "arroz",
+    "feijão",
+    "óleo",
+    "café",
+    "açúcar",
+    "trigo",
+    "leite"
+  ]
+}
