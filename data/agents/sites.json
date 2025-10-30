@@ -1,0 +1,92 @@
+{
+  "kawakami.com.br": {
+    "paths": ["/", "/ofertas", "/promocoes", "/promocao"],
+    "search_templates": ["/busca?busca={q}", "/buscar?q={q}", "/produtos?search={q}"],
+    "card_selectors": [
+      ".product-card",
+      ".produto",
+      ".product",
+      ".oferta",
+      ".item"
+    ],
+    "name_selectors": [
+      ".product-name",
+      ".name",
+      "h2",
+      "h3",
+      ".titulo"
+    ],
+    "price_selectors": [
+      ".price",
+      ".preco",
+      ".valor",
+      ".price-current"
+    ]
+  },
+  "tauste.com.br": {
+    "paths": ["/marilia/", "/ofertas", "/promocoes"],
+    "search_templates": ["/marilia/catalogsearch/result/?q={q}"],
+    "card_selectors": [
+      "li.product-item",
+      ".product-item",
+      ".product-item-info"
+    ],
+    "name_selectors": [
+      "strong.product-item-name a.product-item-link",
+      "a.product-item-link[title]",
+      ".product-item-link",
+      ".product-name"
+    ],
+    "price_selectors": [
+      "span.price",
+      ".price-wrapper .price",
+      ".price-box .price"
+    ]
+  },
+  "amigao.com": {
+    "paths": ["/", "/ofertas", "/promocoes"],
+    "search_templates": ["/s/?q={q}", "/busca?q={q}", "/busca?busca={q}"],
+    "card_selectors": [
+      ".produto",
+      ".product",
+      ".oferta",
+      ".item",
+      ".card"
+    ],
+    "name_selectors": [
+      ".descricao",
+      ".product-name",
+      ".name",
+      "h3"
+    ],
+    "price_selectors": [
+      ".preco",
+      ".price",
+      ".valor",
+      ".price-current"
+    ]
+  },
+  "confianca.com.br": {
+    "paths": ["/marilia", "/ofertas", "/promocoes"],
+    "search_templates": ["/busca?q={q}", "/produtos?search={q}"],
+    "card_selectors": [
+      ".oferta",
+      ".produto",
+      ".product",
+      ".product-card"
+    ],
+    "name_selectors": [
+      ".titulo",
+      ".product-name",
+      ".name",
+      "h3",
+      "h2"
+    ],
+    "price_selectors": [
+      ".preco",
+      ".price",
+      ".valor",
+      ".price-current"
+    ]
+  }
+}

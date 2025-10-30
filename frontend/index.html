@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotador de Compras</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .loader { border-top-color: #6366f1; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+    .sugestao-item { background:#f3f4f6; padding:.25rem .5rem; border-radius:.375rem; cursor:pointer; font-size:.875rem; }
+    .sugestao-item:hover { background:#e5e7eb; }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900" style="font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';">
+
+  <div class="container mx-auto max-w-6xl p-4 sm:p-6">
+    <header class="bg-white shadow-sm rounded-xl p-6 mb-6">
+      <div class="flex flex-col items-center gap-2">
+        <h1 class="text-3xl font-bold">🛒 Cotador de Compras</h1>
+        <p class="text-gray-600 text-center">Monte sua lista e descubra onde é mais barato comprar.</p>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <section class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+        <h2 class="text-lg font-semibold">Adicionar Itens</h2>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input id="item-input" type="text" placeholder="Ex: arroz, feijão, café..." class="flex-1 rounded-md border border-gray-300 px-3 py-3 focus:border-indigo-500 focus:ring-indigo-500">
+          <button id="add-item-btn" class="rounded-md bg-indigo-600 text-white px-5 py-3 hover:bg-indigo-700">Adicionar</button>
+        </div>
+        <div class="flex flex-wrap gap-2 pt-2 text-sm">
+          <span class="sugestao-item">arroz</span>
+          <span class="sugestao-item">feijão</span>
+          <span class="sugestao-item">óleo</span>
+          <span class="sugestao-item">café</span>
+          <span class="sugestao-item">açúcar</span>
+          <span class="sugestao-item">trigo</span>
+          <span class="sugestao-item">leite</span>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="text-lg font-semibold mb-4">Sua Lista de Compras</h2>
+        <ul id="lista-compras-ui" class="space-y-2">
+          <li id="lista-vazia-placeholder" class="text-gray-500 italic">Sua lista está vazia.</li>
+        </ul>
+        <button id="cotar-btn" class="mt-6 w-full rounded-md bg-green-600 text-white px-6 py-3 hover:bg-green-700 disabled:bg-gray-400" disabled>
+          Cotar Preços Agora
+        </button>
+      </section>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+      <section id="resultado-container" class="bg-white rounded-xl shadow-sm p-6 lg:col-span-2 hidden">
+        <div id="loading-spinner" class="flex justify-center items-center p-8 hidden">
+          <div class="loader rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+          <p class="ml-4 text-gray-600">Buscando melhores preços...</p>
+        </div>
+        <div id="resultado-content"></div>
+      </section>
+
+      <aside class="bg-white rounded-xl shadow-sm p-6">
+        <div class="flex items-center justify-between mb-3 gap-2">
+          <h3 class="text-lg font-semibold">Histórico</h3>
+          <div class="flex gap-2">
+            <button id="refresh-historico" class="text-sm px-3 py-1 border rounded hover:bg-gray-50">Atualizar</button>
+            <button id="clear-historico" class="text-sm px-3 py-1 border rounded hover:bg-red-50 text-red-600">Limpar</button>
+          </div>
+        </div>
+        <ul id="historico-lista" class="divide-y divide-gray-200 text-sm">
+          <li class="py-2 text-gray-500 italic">Sem cotações ainda.</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://127.0.0.1:8000';
+    const API_URL = API_BASE + '/cotar/';
+
+    let listaDeItens = [];
+
+    const itemInput = document.getElementById('item-input');
+    const addBtn = document.getElementById('add-item-btn');
+    const listaUI = document.getElementById('lista-compras-ui');
+    const placeholderListaVazia = document.getElementById('lista-vazia-placeholder');
+    const resultadoContainer = document.getElementById('resultado-container');
+    const resultadoContent = document.getElementById('resultado-content');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const cotarBtn = document.getElementById('cotar-btn');
+    const historicoLista = document.getElementById('historico-lista');
+    const refreshHistoricoBtn = document.getElementById('refresh-historico');
+    const clearHistoricoBtn = document.getElementById('clear-historico');
+
+    function atualizarListaUI() {
+      listaUI.innerHTML = '';
+      if (listaDeItens.length === 0) {
+        listaUI.appendChild(placeholderListaVazia);
+        cotarBtn.disabled = true;
+        return;
+      }
+      cotarBtn.disabled = false;
+      listaDeItens.forEach((texto, idx) => {
+        const li = document.createElement('li');
+        li.className = 'flex items-center justify-between bg-gray-50 rounded-md p-2';
+        li.innerHTML = `
+          <span class="truncate">${texto}</span>
+          <button class="text-red-600 hover:text-red-700 text-sm" data-idx="${idx}">remover</button>
+        `;
+        li.querySelector('button').addEventListener('click', () => {
+          listaDeItens.splice(idx, 1);
+          atualizarListaUI();
+        });
+        listaUI.appendChild(li);
+      });
+    }
+
+    function adicionarItemNaLista() {
+      const val = itemInput.value.trim();
+      if (!val) return;
+      listaDeItens.push(val);
+      itemInput.value = '';
+      atualizarListaUI();
+    }
+
+    async function carregarHistorico() {
+      try {
+        const resp = await fetch(API_BASE + '/cotacoes_summary?limit=20');
+        if (!resp.ok) throw new Error('Falha ao carregar histórico');
+        const js = await resp.json();
+        if (!js.items || js.items.length === 0) {
+          historicoLista.innerHTML = '<li class="py-2 text-gray-500 italic">Sem cotações ainda.</li>';
+          return;
+        }
+        historicoLista.innerHTML = js.items.map(i => `
+          <li class="py-2 flex justify-between items-center cursor-pointer hover:bg-gray-50 px-2" data-id="${i.id}">
+            <div class="flex flex-col">
+              <span class="text-gray-800">${i.requested_at || '-'}</span>
+              <span class="text-gray-500 text-xs">${i.best_market ? i.best_market.replace('_',' ') : '-'}</span>
+            </div>
+            <span class="font-semibold">${i.best_total != null ? ('R$ ' + i.best_total.toFixed(2)) : '-'}</span>
+          </li>
+        `).join('');
+        historicoLista.querySelectorAll('li').forEach(li => {
+          li.addEventListener('click', async () => {
+            const id = li.getAttribute('data-id');
+            if (!id) return;
+            const r = await fetch(API_BASE + '/cotacoes/' + id);
+            if (!r.ok) return;
+            const data = await r.json();
+            exibirResultados(data);
+          });
+        });
+      } catch (e) { console.error(e); }
+    }
+
+    async function buscarCotacao() {
+      if (listaDeItens.length === 0) return;
+      resultadoContainer.classList.remove('hidden');
+      loadingSpinner.classList.remove('hidden');
+      cotarBtn.disabled = true;
+      try {
+        const payload = { itens: listaDeItens };
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error('Erro na API');
+        const data = await response.json();
+        exibirResultados(data);
+        carregarHistorico();
+      } catch (err) {
+        console.error('Erro ao buscar cotação:', err);
+        resultadoContent.innerHTML = '<p class="text-red-500 text-center"><strong>Erro ao conectar com o servidor.</strong><br>Verifique se o backend está rodando no terminal.</p>';
+      } finally {
+        loadingSpinner.classList.add('hidden');
+        cotarBtn.disabled = false;
+        cotarBtn.textContent = 'Cotar Preços Novamente';
+      }
+    }
+
+    function exibirResultados(data) {
+      const { totais_por_mercado, cotacoes_detalhadas, requested_at, currency, source } = data;
+
+      let htmlResultado = '';
+      htmlResultado += `
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-sm text-gray-600">Cotação de: <strong>${requested_at || '-'}</strong></div>
+          <div class="text-xs text-gray-500">Fonte: ${source || 'n/d'} | Moeda: ${currency || 'BRL'}</div>
+        </div>
+      `;
+
+      let melhorMercado = null, menorPreco = Infinity;
+      const totaisOrdenados = Object.entries(totais_por_mercado || {}).sort((a,b) => a[1]-b[1]);
+      if (totaisOrdenados.length > 0) {
+        melhorMercado = totaisOrdenados[0][0];
+        menorPreco = totaisOrdenados[0][1];
+      }
+      if (melhorMercado) {
+        htmlResultado += `
+          <div class="bg-green-50 border border-green-200 text-green-800 p-4 mb-6 rounded-md">
+            <h3 class="text-lg font-bold mb-1">✅ Melhor Opção Encontrada!</h3>
+            <p>O mercado mais barato é <strong class="capitalize">${melhorMercado.replace('_',' ')}</strong>
+               com total de <strong class="text-xl">R$ ${menorPreco.toFixed(2)}</strong></p>
+          </div>
+        `;
+      }
+
+      htmlResultado += '<h3 class="text-2xl font-semibold text-gray-800 mb-4">Detalhes da Cotação:</h3>';
+      htmlResultado += '<div class="space-y-4">';
+      for (const [nomeMercado, total] of totaisOrdenados) {
+        htmlResultado += `
+          <div class="border border-gray-200 p-4 rounded-lg shadow-sm">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-xl font-semibold capitalize">${nomeMercado.replace('_',' ')}</h4>
+              <span class="text-2xl font-bold text-gray-800">R$ ${total.toFixed(2)}</span>
+            </div>
+            <ul class="divide-y divide-gray-200">
+        `;
+        const itens = (cotacoes_detalhadas || {})[nomeMercado] || [];
+        itens.forEach(item => {
+          if (item.preco > 0) {
+            htmlResultado += `
+              <li class="py-2 flex justify-between items-center">
+                <div>
+                  <p class="text-sm text-gray-800">${item.item_encontrado}</p>
+                  <p class="text-xs text-gray-500">(Buscado por: "${item.item_buscado}")</p>
+                </div>
+                <span class="text-sm font-medium text-gray-700">R$ ${item.preco.toFixed(2)}</span>
+              </li>
+            `;
+          } else {
+            htmlResultado += `
+              <li class="py-2 flex justify-between items-center opacity-60">
+                <div>
+                  <p class="text-sm text-gray-500 italic">${item.item_buscado}</p>
+                </div>
+                <span class="text-sm font-medium text-red-500">Não encontrado</span>
+              </li>
+            `;
+          }
+        });
+        htmlResultado += '</ul></div>';
+      }
+      htmlResultado += '</div>';
+      resultadoContent.innerHTML = htmlResultado;
+      resultadoContainer.classList.remove('hidden');
+    }
+
+    // Eventos
+    itemInput.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); adicionarItemNaLista(); } });
+    addBtn.addEventListener('click', adicionarItemNaLista);
+    cotarBtn.addEventListener('click', buscarCotacao);
+    document.querySelectorAll('.sugestao-item').forEach(el => el.addEventListener('click', () => { itemInput.value = el.textContent; itemInput.focus(); }));
+    refreshHistoricoBtn.addEventListener('click', carregarHistorico);
+    clearHistoricoBtn.addEventListener('click', async () => {
+      if (!confirm('Tem certeza que deseja limpar o histórico de cotações?')) return;
+      try {
+        const r = await fetch(API_BASE + '/cotacoes/', { method: 'DELETE' });
+        if (!r.ok) throw new Error('Falha ao limpar histórico');
+        historicoLista.innerHTML = '<li class="py-2 text-gray-500 italic">Sem cotações ainda.</li>';
+      } catch (e) { console.error(e); }
+    });
+
+    // Inicialização
+    atualizarListaUI();
+    carregarHistorico();
+  </script>
+</body>
+</html>
+

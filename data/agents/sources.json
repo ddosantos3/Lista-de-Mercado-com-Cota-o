@@ -1,0 +1,6 @@
+[
+  { "name": "kawakami_marilia", "base_url": "https://www.kawakami.com.br/", "kind": "headless" },
+  { "name": "tauste_marilia", "base_url": "https://tauste.com.br/marilia/", "kind": "agent" },
+  { "name": "amigao", "base_url": "https://www.amigao.com/", "kind": "headless" },
+  { "name": "confianca_marilia", "base_url": "https://www.confianca.com.br/marilia", "kind": "headless" }
+]

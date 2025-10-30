@@ -1,0 +1,29 @@
+{
+  "confianca_marilia": {
+    "arroz 5kg tipo 1": 27.99,
+    "feijão carioca 1kg": 8.99,
+    "óleo de soja 900ml": 7.59,
+    "café 500g": 14.9,
+    "açúcar 1kg": 5.49,
+    "farinha de trigo 1kg": 4.99,
+    "leite longa vida 1l": 3.99
+  },
+  "tauste_marilia": {
+    "arroz 5kg tipo 1": 28.5,
+    "feijão carioca 1kg": 8.75,
+    "óleo de soja 900ml": 7.49,
+    "café 500g": 15.2,
+    "açúcar 1kg": 5.39,
+    "farinha de trigo 1kg": 5.1,
+    "leite longa vida 1l": 4.05
+  },
+  "kawakami_marilia": {
+    "arroz 5kg tipo 1": 27.89,
+    "feijão carioca 1kg": 9.1,
+    "óleo de soja 900ml": 7.65,
+    "café 500g": 14.99,
+    "açúcar 1kg": 5.45,
+    "farinha de trigo 1kg": 4.95,
+    "leite longa vida 1l": 3.98
+  }
+}
